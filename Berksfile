@@ -5,9 +5,9 @@ metadata
 
 cookbook 'conda', github: "logicalclocks/conda-chef", branch: "master"
 cookbook 'kagent', github: "logicalclocks/kagent-chef", branch: "master"
-cookbook 'hops', github: "logicalclocks/hops-hadoop-chef", branch: "master"
+cookbook 'hops', github: "berthoug/hops-hadoop-chef", branch: "HOPS-1401"
 cookbook 'ndb', github: "logicalclocks/ndb-chef", branch: "master"
-cookbook 'hadoop_spark', github: "logicalclocks/spark-chef", branch: "master"
+cookbook 'hadoop_spark', github: "berthoug/spark-chef", branch: "HOPSWORKS-1225"
 cookbook 'flink', github: "logicalclocks/flink-chef", branch: "master"
 cookbook 'livy', github: "logicalclocks/livy-chef", branch: "master"
 cookbook 'drelephant', github: "logicalclocks/dr-elephant-chef", branch: "master"
@@ -22,6 +22,7 @@ cookbook 'hopsmonitor', github: "logicalclocks/hopsmonitor-chef", branch: "maste
 cookbook 'glassfish', github: "logicalclocks/chef-glassfish", branch: "master"
 cookbook 'hops_airflow', github: "logicalclocks/airflow-chef", branch: "master"
 cookbook 'hive2', github: "logicalclocks/hive-chef", branch: "master"
+cookbook 'kube-hops', github: "logicalclocks/kube-hops-chef", branch: "master"
 
 cookbook 'ulimit', github: "logicalclocks/chef-ulimit", branch: "master"
 cookbook 'java'
