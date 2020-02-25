@@ -167,7 +167,6 @@ CREATE TABLE `conda_commands` (
   `arg` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
   `lib` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
   `version` varchar(52) COLLATE latin1_general_cs DEFAULT NULL,
-  `host_id` int(11) NOT NULL,
   `status` varchar(52) COLLATE latin1_general_cs NOT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `install_type` varchar(52) COLLATE latin1_general_cs DEFAULT NULL,
@@ -176,9 +175,7 @@ CREATE TABLE `conda_commands` (
   `install_jupyter` tinyint(1) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `host_id` (`host_id`),
   KEY `project_id` (`project_id`),
-  CONSTRAINT `FK_481_519` FOREIGN KEY (`host_id`) REFERENCES `hosts` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `FK_284_520` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `user_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=ndbcluster AUTO_INCREMENT=32 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
@@ -1198,6 +1195,7 @@ CREATE TABLE `python_dep` (
   `preinstalled` tinyint(1) DEFAULT '0',
   `install_type` int(11) NOT NULL,
   `machine_type` int(11) NOT NULL,
+  `base_env` VARCHAR(45) COLLATE latin1_general_cs,
   PRIMARY KEY (`id`),
   UNIQUE KEY `dependency` (`dependency`,`version`,`install_type`,`repo_id`,`machine_type`),
   KEY `repo_id` (`repo_id`),

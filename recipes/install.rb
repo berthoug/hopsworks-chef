@@ -2,6 +2,8 @@ require 'json'
 require 'base64'
 require 'digest'
 
+include_recipe "hops::docker"
+
 my_ip = my_private_ip()
 domain_name="domain1"
 domains_dir = node['hopsworks']['domains_dir']
@@ -81,6 +83,13 @@ group node['jupyter']['group'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
+group "docker" do
+  action :modify
+  members ["#{node['hopsworks']['user']}"]
+  append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
 group node['serving']['group'] do
   action :modify
   members ["#{node['hopsworks']['user']}"]
@@ -133,6 +142,13 @@ group node['kagent']['certs_group'] do
   action :modify
   members ["#{node['hopsworks']['user']}"]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
+group node['hops']['group'] do
+  gid node['hops']['group_id']
+  action :create
+  not_if "getent group #{node['hops']['group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -648,7 +664,7 @@ end
 
 kagent_sudoers "start-llap" do 
   user          node['glassfish']['user']
-  group         node['hive2']['group']
+  group         node['hops']['group']
   script_name   "start-llap.sh"
   template      "start-llap.sh.erb"
   run_as        node["hive2"]['user']
