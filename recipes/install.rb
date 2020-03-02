@@ -45,12 +45,6 @@ group node['hopsworks']['group'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group node['jupyter']['group'] do
-  action :create
-  not_if "getent group #{node['jupyter']['group']}"
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
 group node['serving']['group'] do
   action :create
   not_if "getent group #{node['serving']['group']}"
@@ -76,13 +70,6 @@ user node['hopsworks']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group node['jupyter']['group'] do
-  action :modify
-  members ["#{node['hopsworks']['user']}"]
-  append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
 group "docker" do
   action :modify
   members ["#{node['hopsworks']['user']}"]
@@ -91,13 +78,6 @@ group "docker" do
 end
 
 group node['serving']['group'] do
-  action :modify
-  members ["#{node['hopsworks']['user']}"]
-  append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
-group node['jupyter']['group'] do
   action :modify
   members ["#{node['hopsworks']['user']}"]
   append true
@@ -116,16 +96,6 @@ group node['hops']['hdfs']['user'] do
   action :modify
   members ["#{node['hopsworks']['user']}"]
   append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
-user node['jupyter']['user'] do
-  home node['jupyter']['base_dir']
-  gid node['jupyter']['group']
-  action :create
-  shell "/bin/bash"
-  manage_home true
-  not_if "getent passwd #{node['jupyter']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -154,15 +124,15 @@ end
 
 group node['hops']['group'] do
   action :modify
-  members ["#{node['hopsworks']['user']}", "#{node['jupyter']['user']}", "#{node['serving']['user']}"]
+  members ["#{node['hopsworks']['user']}", "#{node['serving']['user']}"]
   append true
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 #update permissions of base_dir to 770
 directory node['jupyter']['base_dir']  do
-  owner node['jupyter']['user']
-  group node['jupyter']['group']
+  owner node['hops']['yarnapp']['user']
+  group node['hops']['group']
   mode "770"
   action :create
 end
@@ -718,7 +688,7 @@ end
   template "#{theDomain}/bin/#{script}" do
     source "#{script}.erb"
     owner node['glassfish']['user']
-    group node['jupyter']['group']
+    group node['hops']['group']
     mode "750"
     action :create
   end
@@ -766,13 +736,14 @@ end
 # Hopsworks will use a sudoer script to launch jupyter as the 'jupyter' user.
 # The jupyter user will be able to read the files and write to the directories due to group permissions
 
-user node["jupyter"]["user"] do
-  home node["jupyter"]["base_dir"]
-  gid node["jupyter"]["group"]
-  action :create
-  shell "/bin/bash"
+user node['hops']['yarnapp']['user'] do
+  uid node['hops']['yarnapp']['uid']
+  gid node['hops']['group']
+  system true
   manage_home true
-  not_if "getent passwd #{node["jupyter"]["user"]}"
+  shell "/bin/bash"
+  action :create
+  not_if "getent passwd #{node['hops']['yarnapp']['user']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 

@@ -1015,7 +1015,7 @@ directory node['hopsworks']['staging_dir']  do
 end
 
 directory node['hopsworks']['staging_dir'] + "/private_dirs"  do
-  owner node['jupyter']['user']
+  owner node['hops']['yarnapp']['user']
   group node['hopsworks']['group']
   mode "0370"
   action :create

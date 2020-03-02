@@ -13,14 +13,10 @@ help() {
     exit 1
 }
 
-PORT=0
-CONDA_DIR=<%= node["conda"]["base_dir"] %>
 DOMAINS_DIR=<%= node['glassfish']['domains_dir'] %>
-JUPYTER_USER=<%= node['jupyter']['user'] %>
-JUPYTER_GROUP=<%= node['jupyter']['group'] %>
+JUPYTER_USER=<%= node['hops']['yarnapp']['user'] %>
+JUPYTER_GROUP=<%= node['hops']['group'] %>
 HOPSWORKS_USER=<%= node['hopsworks']['user'] %>
-KERNELS_DIR=/usr/local/share/jupyter/kernels
-EXEC_AS_ANACONDA_USER=<%= node['conda']['user'] %>
 
 if [ "$1" == "kill" ] ; then
 

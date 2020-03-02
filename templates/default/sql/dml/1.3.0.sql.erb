@@ -1,3 +1,5 @@
 REPLACE INTO `hopsworks`.`tf_lib_mapping` VALUES ("1.15.0", "10.0", "7.6.0.64", "2.3");
 INSERT INTO `hopsworks`.`variables` VALUES ("yarn_runtime", "docker");
 INSERT INTO `hopsworks`.`variables` VALUES ("docker_mounts", "<%= node['hops']['docker']['mounts'] %>");
+REPLACE INTO `hopsworks`.`variables` VALUES ("jupyter_user", "<%= node['hops']['yarnapp']['user'] %>");
+REPLACE INTO `hopsworks`.`variables` VALUES ("jupyter_group", "<%= node['hops']['group'] %>");
