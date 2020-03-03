@@ -18,7 +18,7 @@ PORT=$3
 
 
 function kill_named {
-    PID=$(ps aux | grep -i jupyter | grep "${PORT}" | grep -v grep | awk '{print $2}')
+    pid=$(ps -ef | grep -E "jupyter-(lab|notebook)" | grep "port=$6" | awk '{print $2}')
     if [ "$PID" != "" ] ; then
 	kill -9 "$PID" > /dev/null 2>&1
         res=$?

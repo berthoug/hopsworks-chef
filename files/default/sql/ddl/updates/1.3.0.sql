@@ -5,3 +5,4 @@ SET SQL_SAFE_UPDATES = 1;
 ALTER TABLE `hopsworks`.`python_dep` ADD COLUMN `base_env` VARCHAR(45) COLLATE latin1_general_cs;
 ALTER TABLE `hopsworks`.`conda_commands` DROP FOREIGN KEY `FK_481_519`;
 ALTER TABLE `hopsworks`.`conda_commands` DROP COLUMN `host_id`, DROP INDEX `host_id` ;
+ALTER TABLE `hopsworks`.`conda_commands` CHANGE `proj` `docker_image` varchar(255) COLLATE latin1_general_cs NOT NULL;
