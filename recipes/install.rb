@@ -70,13 +70,6 @@ user node['hopsworks']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group "docker" do
-  action :modify
-  members ["#{node['hopsworks']['user']}"]
-  append true
-  not_if { node['install']['external_users'].casecmp("true") == 0 }
-end
-
 group node['serving']['group'] do
   action :modify
   members ["#{node['hopsworks']['user']}"]
@@ -584,6 +577,15 @@ kagent_sudoers "jupyter" do
   group         "root"
   script_name   "jupyter.sh"
   template      "jupyter.sh.erb"
+  run_as        "ALL" # run this as root - inside we change to different users 
+  not_if       { node['install']['kubernetes'].casecmp("true") == 0 }
+end
+
+kagent_sudoers "dockerImage" do 
+  user          node['glassfish']['user']
+  group         "root"
+  script_name   "dockerImage.sh"
+  template      "dockerImage.sh.erb"
   run_as        "ALL" # run this as root - inside we change to different users 
   not_if       { node['install']['kubernetes'].casecmp("true") == 0 }
 end
